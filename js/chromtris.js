@@ -1,4 +1,32 @@
-function startChromtris() {
+var ChromTris = ChromTris || {};
+
+ChromTris.toHtml = function(object) {
+    var result = '';
+    for (state = 0; state < object.numberOfStates; state++) {
+        result += '<p>';
+        var matrix = object.currentMatrix();
+        for (i = 0; i < object.matrixDimension; i++) {
+            for (j = 0; j < object.matrixDimension; j ++) {
+                result += matrix[i][j] ? 'X' : '-';
+            }
+            result += '<br />';
+        }
+        object.turnClockwise();
+    }    
+    return result;
+};
+
+window.onload = function()
+{
+    document.getElementById('ChromTrisConsole').innerHTML = ChromTris.Grid.toHtml();
+    
+    //alert("ahoj");
+};
+
+
+
+/*
+  function startChromtris() {
   PhiloGL('canvas', {
     program: {
       from: 'ids',
@@ -51,4 +79,4 @@ function startChromtris() {
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
     }
   });  
-}
+}*/

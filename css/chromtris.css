@@ -1,1 +1,22 @@
-empty file.
+#ChromTris {
+    
+    width: 300px;
+    height: 500px;
+    
+    background: #ddd;
+    
+    float: left;
+    margin: 20px;
+}
+
+#ChromTrisConsole {
+    display: block;
+    float: left;
+    background: #eee;
+    
+    width: 200px;
+    height: 500px;
+    
+    margin: 20px;
+    padding: 10px;
+}
