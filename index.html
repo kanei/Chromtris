@@ -1,14 +1,47 @@
 <!DOCTYPE HTML>  
+
+<script id="shader-fs" type="x-shader/x-fragment"> 
+  #ifdef GL_ES
+  precision highp float;
+  #endif
+ 
+  varying vec4 vColor;
+ 
+  void main(void) {
+    gl_FragColor = vColor;
+  }
+</script> 
+ 
+<script id="shader-vs" type="x-shader/x-vertex"> 
+  attribute vec3 aVertexPosition;
+  attribute vec4 aVertexColor;
+ 
+  uniform mat4 uMVMatrix;
+  uniform mat4 uPMatrix;
+ 
+  varying vec4 vColor;
+ 
+  void main(void) {
+    gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
+    vColor = aVertexColor;
+  }
+</script> 
+
 <html>
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7, IE=9">
+    
+    <script src="js/PhiloGL.js"></script>
+    <script src="js/enums.js"></script>
     <script src="js/object.js"></script>
     <script src="js/chromtris.js"></script>    
     <script src="js/grid.js"></script>
+    <script src="js/keys.js"></script>
+    
     <link href="css/chromtris.css" media="screen" rel="stylesheet" type="text/css"></link>
   </head>
   <body>
-    <div id="ChromTris"></div>
+    <canvas id="ChromTrisCanvas"></canvas>
     <pre id="ChromTrisConsole"></div>
   </body>
 </html>

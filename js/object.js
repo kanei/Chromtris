@@ -1,15 +1,5 @@
 var ChromTris = ChromTris || {};
 
-ChromTris.ObjectType = {
-    LeftEl:     0,
-    RightEl:    1,
-    LeftZed:    2,
-    RightZed:   3,
-    Line:       4,
-    Square:     5,
-    Ti:         6
-};
-
 /**
  * Class for a falling object - has number of states, first one is the default one
  * 
@@ -17,15 +7,15 @@ ChromTris.ObjectType = {
  * @method turnAntiClockwise decrements current position in matrixes
  * 
  * @param numberOfStates total number of matrixes to step through
- * @param matrixDimension dimension of the matrix - used for both dimensions
+ * @param dimension dimension of the matrix - used for both dimensions
  * @param matrixes array with matrixes data (booleans)
  * 
  * @return object with 
  */
-ChromTris.FallingObject = function(numberOfStates, matrixDimension, matrixes) {
+ChromTris.FallingObject = function(numberOfStates, dimension, matrixes) {
     
     this.numberOfStates = numberOfStates;
-    this.matrixDimension = matrixDimension;
+    this.dimension = dimension;
     this.matrixes = matrixes;
     
     this.currentState = 0;
@@ -36,7 +26,7 @@ ChromTris.FallingObject = function(numberOfStates, matrixDimension, matrixes) {
  *
  * @return current matrix data
  */
-ChromTris.FallingObject.prototype.currentMatrix = function() {
+ChromTris.FallingObject.prototype.activeMatrix = function() {
     return this.matrixes[this.currentState];
 };
 
@@ -45,6 +35,13 @@ ChromTris.FallingObject.prototype.currentMatrix = function() {
  */
 ChromTris.FallingObject.prototype.turnClockwise = function() {
     this.currentState = (this.currentState + 1) % this.numberOfStates;    
+};
+
+/**
+ * Reset matrix to a default position (matrix no. 0)
+ */
+ChromTris.FallingObject.prototype.reset = function() {
+    this.currentState = 0;   
 };
 
 /**
