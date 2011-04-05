@@ -18,3 +18,9 @@ ChromTris.Direction = {
     Bottom: 3,
     Left: 4
 };
+
+ChromTris.Rotation = {
+    None: 0,
+    Clockwise: 1,
+    AntiClockwise: 2
+};

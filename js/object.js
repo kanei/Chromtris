@@ -14,11 +14,19 @@ var ChromTris = ChromTris || {};
  */
 ChromTris.FallingObject = function(numberOfStates, dimension, matrixes) {
     
-    this.numberOfStates = numberOfStates;
-    this.dimension = dimension;
-    this.matrixes = matrixes;
+    this._numberOfStates = numberOfStates;
+    this._currentState = 0;
+    this._matrixes = matrixes;
     
-    this.currentState = 0;
+    this.dimension = dimension;
+};
+
+ChromTris.FallingObject.prototype._nextState = function(state) {
+    return (state + 1) % this._numberOfStates;
+};
+
+ChromTris.FallingObject.prototype._previousState = function(state) {
+    return state === 0 ? this._numberOfStates - 1 : state - 1;
 };
 
 /**
@@ -27,32 +35,81 @@ ChromTris.FallingObject = function(numberOfStates, dimension, matrixes) {
  * @return current matrix data
  */
 ChromTris.FallingObject.prototype.activeMatrix = function() {
-    return this.matrixes[this.currentState];
+    return this._matrixes[this._currentState];
 };
 
 /** 
  * Turn the object clockwise - move in its matrixes by one to the right.
  */
 ChromTris.FallingObject.prototype.turnClockwise = function() {
-    this.currentState = (this.currentState + 1) % this.numberOfStates;    
-};
-
-/**
- * Reset matrix to a default position (matrix no. 0)
- */
-ChromTris.FallingObject.prototype.reset = function() {
-    this.currentState = 0;   
+    this._currentState = _nextState(this._currentState);    
 };
 
 /**
  * Turn the object anti clockwise - move in its matrixes by one to the left
  */
 ChromTris.FallingObject.prototype.turnAntiClockwise = function (obj) {
-    this.currentState = this.currentState === 0 ? this.numberOfStates - 1 : this.currentState - 1;
+    this._currentState = this._previousState(this._currentState);
 };
 
+/**
+ * Get matrix in direction of rotation
+ */
+ChromTris.FallingObject.prototype.nextMatrix = function(rotation) {
+    var state = this._currentState;
+    
+    switch (rotation) {
+        case ChromTris.Rotation.None:
+            break;
+        case ChromTris.Rotation.Clockwise:
+            state = this._nextState(state);
+            break;
+        case ChromTris.Rotation.AntiClockwise:
+            state = this._previousState(state);
+            break;
+    }
+    
+    return this._matrixes[state];
+};
+
+/**
+ * Reset matrix to a default position (matrix no. 0)
+ */
+ChromTris.FallingObject.prototype.reset = function() {
+    this._currentState = 0;   
+};
 
 ChromTris.Objects = [];
+
+/**
+ * Left El Object 
+ * 
+ * - X -
+ * - X -
+ * X X -
+ * 
+ */
+ChromTris.Objects[ChromTris.ObjectType.LeftEl] = new ChromTris.FallingObject(
+    4, 
+    3, 
+    [   [   [false, true, false], 
+            [false, true, false], 
+            [true, true, false]   
+        ],
+        [   [true, false, false],
+            [true, true, true],
+            [false, false, false]
+        ],
+        [   [false, true, true],
+            [false, true, false],
+            [false, true, false]
+        ],
+        [   [false, false, false],
+            [true, true, true],
+            [false, false, true]
+        ]
+    ]
+);
 
 /**
  * Right El Object 
@@ -84,4 +141,118 @@ ChromTris.Objects[ChromTris.ObjectType.RightEl] = new ChromTris.FallingObject(
     ]
 );
 
+/**
+ * Left Zed Object 
+ * 
+ * - - -  |  - - X
+ * X X -  |  - X X
+ * - X X  |  - X -
+ * 
+ */
+ChromTris.Objects[ChromTris.ObjectType.LeftZed] = new ChromTris.FallingObject(
+    2, 
+    3, 
+    [   [   [false, false, false], 
+            [true, true, false], 
+            [false, true, true]   
+        ],
+        [   [false, false, true],
+            [false, true, true],
+            [false, true, false]
+        ]
+    ]
+);
+
+/**
+ * Right Zed Object 
+ * 
+ * - - -  |  X - -
+ * - X X  |  X X -
+ * X X -  |  - X - 
+ * 
+ */
+ChromTris.Objects[ChromTris.ObjectType.RightZed] = new ChromTris.FallingObject(
+    2, 
+    3, 
+    [   [   [false, false, false], 
+            [false, true, true], 
+            [true, true, false]   
+        ],
+        [   [true, false, false],
+            [true, true, false],
+            [false, true, false]
+        ]
+    ]
+);
+
+/**
+ * Line Object 
+ * 
+ * - X - -  |  - - - -
+ * - X - -  |  - - - -
+ * - X - -  |  X X X X
+ * - X - -  |  - - - -
+ * 
+ */
+ChromTris.Objects[ChromTris.ObjectType.Line] = new ChromTris.FallingObject(
+    2, 
+    4, 
+    [   [   [false, true, false, false], 
+            [false, true, false, false], 
+            [false, true, false, false],
+            [false, true, false, false] 
+        ],
+        [   [false, false, false, false], 
+            [false, false, false, false], 
+            [true, true, true, true],
+            [false, false, false, false] 
+        ]
+    ]
+);
+
+/**
+ * Square Object 
+ * 
+ * X X 
+ * X X
+ * 
+ */
+ChromTris.Objects[ChromTris.ObjectType.Square] = new ChromTris.FallingObject(
+    1, 
+    2, 
+    [   [   [true, true], 
+            [true, true]
+        ]
+    ]
+);
+
+/**
+ * Ti Object 
+ * 
+ * - - -  |  X - -  |  X X X  |  - - X
+ * - X -  |  X X -  |  - X -  |  - X X
+ * X X X  |  X - -  |  - - -  |  - - X
+ * 
+ */
+ChromTris.Objects[ChromTris.ObjectType.RightZed] = new ChromTris.FallingObject(
+    4, 
+    3, 
+    [   [   [false, false, false], 
+            [false, true, false], 
+            [true, true, true]   
+        ],
+        [   [true, false, false], 
+            [true, true, false], 
+            [true, false, false]   
+        ],
+        [   [true, true, true], 
+            [false, true, false], 
+            [false, false, false]   
+        ],
+        [   [false, false, true],
+            [false, true, true],
+            [false, false, true]
+        ]
+    ]
+);
 

@@ -31,17 +31,23 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7, IE=9">
     
+    <link href="css/chromtris.css" media="screen" rel="stylesheet" type="text/css"></link>
+    
     <script src="js/PhiloGL.js"></script>
     <script src="js/enums.js"></script>
-    <script src="js/object.js"></script>
     <script src="js/chromtris.js"></script>    
-    <script src="js/grid.js"></script>
-    <script src="js/keys.js"></script>
+    <script src="js/keys.js"></script>   
     
-    <link href="css/chromtris.css" media="screen" rel="stylesheet" type="text/css"></link>
+    <!-- REMOVE -->
+    <script src="js/object.js"></script>
+    <script src="js/grid.js"></script>
+    
   </head>
   <body>
     <canvas id="ChromTrisCanvas"></canvas>
-    <pre id="ChromTrisConsole"></div>
+    <pre id="ChromTrisConsole"></pre>
+    <pre id="ChromTrisErrorConsole"></pre>    
+
+    <input type="button" value="start" name="start" onClick="ChromTris.start()"/>
   </body>
 </html>

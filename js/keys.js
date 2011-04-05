@@ -1,24 +1,22 @@
-document.onkeyup = function () {
+document.onkeydown = function () {
     var KeyID = event.keyCode;
     switch(KeyID)
     {    
         //Up
         case 38:
-            ChromTris.Grid.moveObject(ChromTris.Direction.Up);
+            ChromTris.worker.postMessage(ChromTris.Direction.Up);
             break;
         //Right
         case 39:
-            ChromTris.Grid.moveObject(ChromTris.Direction.Right);
+            ChromTris.worker.postMessage(ChromTris.Direction.Right);
             break;
         //Left
         case 37:
-            ChromTris.Grid.moveObject(ChromTris.Direction.Left);
+            ChromTris.worker.postMessage(ChromTris.Direction.Left);
             break;
         //Down
         case 40:
-            ChromTris.Grid.moveObject(ChromTris.Direction.Down);
+            ChromTris.worker.postMessage(ChromTris.Direction.Down);
             break;
     }
-    
-    ChromTris.redraw();
 };

@@ -24,22 +24,20 @@ ChromTris.startGL = function() {
     });
 };
 
-ChromTris.redraw = function() {
-    document.getElementById('ChromTrisConsole').innerHTML = ChromTris.Grid.toHtml();
-};
-
 ChromTris.start = function() {
-    //document.getElementById('ChromTrisConsole').innerHTML = ChromTris.Grid.toHtml();
+    ChromTris.worker = new Worker('js/worker.js');
     
-    ChromTris.Grid.addObject(ChromTris.ObjectType.RightEl);
+    ChromTris.worker.onmessage = function(event) {
+        document.getElementById('ChromTrisConsole').innerHTML = event.data;
+    };
     
-    ChromTris.redraw();
+    ChromTris.worker.onerror = function(error) {
+        document.getElementById('ChromTrisErrorConsole').innerHTML += error.message + '<br />';
+    };
 };
 
 window.onload = function()
 {    
-    ChromTris.Grid.init();
-    
     ChromTris.start();
 };
 
