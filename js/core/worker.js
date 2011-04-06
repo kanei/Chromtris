@@ -1,6 +1,6 @@
 var ChromTris = ChromTris || {};
 
-importScripts('common/enums.js', 'common/constants.js', 'object.js', 'grid.js');
+importScripts('../common/enums.js', '../common/constants.js', 'object.js', 'grid.js');
 
 //against cheating 135 * 9 = 1215
 var timeBetweenSteps = ChromTris.DATASIZE * ChromTris.WIDTH;

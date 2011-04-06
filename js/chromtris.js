@@ -1,22 +1,27 @@
 var ChromTris = ChromTris || {};
 
 ChromTris.start = function() {
-    ChromTris.Overlay.init('ChromTrisOverlay');
+    ChromTris.Overlay.init('ChromTrisOverlay');    
+    ChromTris.Canvas.init('ChromTrisCanvas');
     
     ChromTris.Overlay.showObject(ChromTris.ObjectType.Square);
     
-    ChromTris.Canvas.init('ChromTrisCanvas');
-    
-    ChromTris.worker = new Worker('js/worker.js');
+    ChromTris.initWorker('js/core/worker.js');
+};
+
+ChromTris.stop = function() {
+    ChromTris.worker.terminate();
+};
+
+ChromTris.initWorker = function(worker) {
+    ChromTris.worker = new Worker(worker);
     
     ChromTris.worker.onmessage = function(event) {
-        
-        var grid = event.data.split(',');
+        var grid = event.data.split(',');      
+        ChromTris.Canvas.displayGrid(grid);  
         
         if (ChromTris.DEBUG) 
             ChromTris.debugData(grid);
-            
-        ChromTris.Canvas.displayGrid(grid);  
     };
     
     ChromTris.worker.onerror = function(error) {
@@ -38,30 +43,10 @@ ChromTris.debugData = function (grid) {
     document.getElementById('ChromTrisConsole').innerHTML = html;
 };
 
-ChromTris.stop = function() {
-    ChromTris.worker.terminate();
-};
-
 window.onload = function() {    
     ChromTris.start();
 };
 
 window.onbeforeunload = function() {
     ChromTris.stop();
-};
-
-ChromTris.toHtml = function(object) {
-    var result = '';
-    for (state = 0; state < object.numberOfStates; state++) {
-        result += '<p>';
-        var matrix = object.activeMatrix();
-        for (i = 0; i < object.matrixDimension; i++) {
-            for (j = 0; j < object.matrixDimension; j ++) {
-                result += matrix[i][j] ? 'X' : '-';
-            }
-            result += '<br />';
-        }
-        object.turnClockwise();
-    }    
-    return result;
 };
