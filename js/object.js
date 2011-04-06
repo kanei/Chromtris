@@ -234,7 +234,7 @@ ChromTris.Objects[ChromTris.ObjectType.Square] = new ChromTris.FallingObject(
  * X X X  |  X - -  |  - - -  |  - - X
  * 
  */
-ChromTris.Objects[ChromTris.ObjectType.RightZed] = new ChromTris.FallingObject(
+ChromTris.Objects[ChromTris.ObjectType.Ti] = new ChromTris.FallingObject(
     4, 
     3, 
     [   [   [false, false, false], 

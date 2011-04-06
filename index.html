@@ -1,42 +1,17 @@
 <!DOCTYPE HTML>  
 
-<script id="shader-fs" type="x-shader/x-fragment"> 
-  #ifdef GL_ES
-  precision highp float;
-  #endif
- 
-  varying vec4 vColor;
- 
-  void main(void) {
-    gl_FragColor = vColor;
-  }
-</script> 
- 
-<script id="shader-vs" type="x-shader/x-vertex"> 
-  attribute vec3 aVertexPosition;
-  attribute vec4 aVertexColor;
- 
-  uniform mat4 uMVMatrix;
-  uniform mat4 uPMatrix;
- 
-  varying vec4 vColor;
- 
-  void main(void) {
-    gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
-    vColor = aVertexColor;
-  }
-</script> 
-
 <html>
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7, IE=9">
     
     <link href="css/chromtris.css" media="screen" rel="stylesheet" type="text/css"></link>
     
-    <script src="js/PhiloGL.js"></script>
-    <script src="js/enums.js"></script>
+    <script src="js/common/enums.js"></script>
+    <script src="js/common/constants.js"></script>
     <script src="js/chromtris.js"></script>    
-    <script src="js/keys.js"></script>   
+    <script src="js/keys.js"></script> 
+    <script src="js/overlay.js"></script>
+    <script src="js/canvas.js"></script>
     
     <!-- REMOVE -->
     <script src="js/object.js"></script>
@@ -44,10 +19,10 @@
     
   </head>
   <body>
-    <canvas id="ChromTrisCanvas"></canvas>
+    <div id="ChromTrisBackground"></div>
+    <canvas id="ChromTrisCanvas" width="400" height="500"></canvas>
+    <canvas id="ChromTrisOverlay" width="400" height="500"></canvas>
     <pre id="ChromTrisConsole"></pre>
     <pre id="ChromTrisErrorConsole"></pre>    
-
-    <input type="button" value="start" name="start" onClick="ChromTris.start()"/>
   </body>
 </html>

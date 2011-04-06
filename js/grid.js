@@ -1,9 +1,6 @@
+var ChromTris = ChromTris || {};
+
 ChromTris.Grid = {
-    //change the datasize after changing these constants
-    _width: 9,
-    _height: 16,
-    
-    _dataSize: 144,
     
     _data: [],
     
@@ -22,7 +19,7 @@ ChromTris.Grid = {
     _cloneData: function() {
         var dataClone = [];
         
-        for (i = 0; i < this._dataSize; i++) 
+        for (i = 0; i < ChromTris.DATASIZE; i++) 
             dataClone[i] = this._data[i];
             
         return dataClone;
@@ -43,7 +40,7 @@ ChromTris.Grid = {
             for (x = 0; x < this._activeObject.dimension; x++) {
                 for (y = 0; y < this._activeObject.dimension; y++) {
                     if (matrix[y][x])
-                        dataWithObject[(y + this._activeObject.y) * this._width + x + this._activeObject.x] = this._activeObject.type;
+                        dataWithObject[(y + this._activeObject.y) * ChromTris.WIDTH + x + this._activeObject.x] = this._activeObject.type;
                 }
             }
         }
@@ -58,8 +55,8 @@ ChromTris.Grid = {
      */
     _deleteLine: function(line) {
         for (y = line; y > 0; y--) {
-            for (x = 0; x < this._width; x++) {
-                this._data[y * this._width + x] = this._data[(y-1) * this._width + x];
+            for (x = 0; x < ChromTris.WIDTH; x++) {
+                this._data[y * ChromTris.WIDTH + x] = this._data[(y-1) * ChromTris.WIDTH + x];
             }
         }
     },
@@ -85,9 +82,9 @@ ChromTris.Grid = {
                 // if object has a true value on the position
                 if (matrix[oy][ox]) {
                     if (x + ox < 0 ||                   //left side
-                        x + ox >= this._width ||        //right size
-                        y + oy >= this._height ||       //bottom side
-                        this._data[(y +oy) * this._width + x + ox] //there is already another object
+                        x + ox >= ChromTris.WIDTH ||        //right size
+                        y + oy >= ChromTris.HEIGHT ||       //bottom side
+                        this._data[(y +oy) * ChromTris.WIDTH + x + ox] //there is already another object
                         )
                         return false;
                 }
@@ -118,27 +115,18 @@ ChromTris.Grid = {
     init: function() {
         //widht * _height
         var length = 9*16;
-        for (i = 0; i < this._dataSize; i++) {
+        for (i = 0; i < ChromTris.DATASIZE; i++) {
             this._data[i] = ChromTris.ObjectType.None;
         }
     },
     
     /**
-     * Returns grid as html formated string
+     * Returns string with array joined and separated by ',' with all its members
      */
-    toHtml: function() {
-        var html = '';
-        
+    toString: function() {
         var dataWithObject = this._getDataWithObject();
         
-        for(i = 0; i < this._dataSize; i++) {
-            html += dataWithObject[i] ? '<span style = "color: ' + ChromTris.Colors.strings[dataWithObject[i]] + ';">X </span>' : '- ';
-            
-            if ((i + 1) % this._width === 0) 
-                html += '<br />';
-        }
-        
-        return html;
+        return dataWithObject.join(',');
     },
     
     /**
@@ -146,10 +134,12 @@ ChromTris.Grid = {
      * at a time.
      * 
      * @param objectType enumeration type of the object from ChromTris.ObjectType
+     * 
+     * @return true if everything goes well, if cant insert the object, returns false
      */
     addObject: function(objectType) {
         if (this.hasObject())
-            return;
+            return false;
         
         if (!objectType || objectType > ChromTris.ObjectType.Ti)
             throw "Wrong object id passed to Grid.addObject: " + objectType;
@@ -158,10 +148,15 @@ ChromTris.Grid = {
         
         this._activeObject.type = objectType;
         this._activeObject.dimension = ChromTris.Objects[objectType].dimension;
-        this._activeObject.x = 3;
-        this._activeObject.y = 3;
         
+        this._activeObject.x = ChromTris.STARTX;
+        this._activeObject.y = ChromTris.STARTY;
         
+        if (!this._checkPosition(this._activeObject.x, this._activeObject.y, ChromTris.Rotation.None)) {
+            return false;
+        }
+        
+        return true;
     }, 
     
     /**
@@ -217,7 +212,7 @@ ChromTris.Grid = {
         for (x = 0; x < this._activeObject.dimension; x++)
             for (y = 0; y < this._activeObject.dimension; y++) {
                 if(matrix[y][x])
-                    this._data[(y + this._activeObject.y) * this._width + x + this._activeObject.x] = this._activeObject.type;
+                    this._data[(y + this._activeObject.y) * ChromTris.WIDTH + x + this._activeObject.x] = this._activeObject.type;
             }
         
         this.deleteObject();
@@ -234,11 +229,11 @@ ChromTris.Grid = {
         
         var deletedLines = [];
         //go through all the lines
-        for (y = 0; y < this._height; y++) {
+        for (y = 0; y < ChromTris.HEIGHT; y++) {
             isFull = true;
             
-            for(x = 0; x < this._width; x++) {
-                if (!this._data[y * this._width + x]) {
+            for(x = 0; x < ChromTris.WIDTH; x++) {
+                if (!this._data[y * ChromTris.WIDTH + x]) {
                     isFull = false;
                     break;
                 }

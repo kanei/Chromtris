@@ -1,15 +1,24 @@
-#ChromTrisCanvas {
-    
-    width: 400px;
-    height: 500px;
-    
+#ChromTrisBackground {
+    position: absolute;
     background: #ddd;
-    
-    float: left;
-    margin: 20px;
+    width: 284px;
+    height: 480px;
+    top: 40px;
+    left: 40px;
+}
+
+#ChromTrisCanvas ,
+#ChromTrisOverlay {
+    position: absolute;
+    top: 30px;
+    left: 30px;
 }
 
 #ChromTrisConsole {
+    position: absolute;
+    left: 400px;
+    top: 30px;
+    
     display: block;
     float: left;
     background: #eee;

@@ -1,44 +1,53 @@
 var ChromTris = ChromTris || {};
 
-ChromTris.startGL = function() { 
-    var earth = new PhiloGL.O3D.Sphere({
-        nlat: 30,
-        nlong: 30,
-        radius: 2,
-        shininess: 32,
-        colors: [1, 1, 1, 1]
-    });
-  
-    PhiloGL('ChromTrisCanvas', {
-        program: {
-            from: 'uris',
-            path: 'shaders/',
-            vs: 'vs.glsl',
-            fs: 'fs.glsl'
-        },
-        camera: {
-            position: {
-            x: 0, y: 0, z: -6
-            }
-        }
-    });
-};
-
 ChromTris.start = function() {
+    ChromTris.Overlay.init('ChromTrisOverlay');
+    
+    ChromTris.Overlay.showObject(ChromTris.ObjectType.Square);
+    
+    ChromTris.Canvas.init('ChromTrisCanvas');
+    
     ChromTris.worker = new Worker('js/worker.js');
     
     ChromTris.worker.onmessage = function(event) {
-        document.getElementById('ChromTrisConsole').innerHTML = event.data;
+        
+        var grid = event.data.split(',');
+        
+        if (ChromTris.DEBUG) 
+            ChromTris.debugData(grid);
+            
+        ChromTris.Canvas.displayGrid(grid);  
     };
     
     ChromTris.worker.onerror = function(error) {
         document.getElementById('ChromTrisErrorConsole').innerHTML += error.message + '<br />';
+        event.preventDefault();
     };
 };
 
-window.onload = function()
-{    
+ChromTris.debugData = function (grid) {
+    var html = '';
+    
+    for(i = 0; i < ChromTris.DATASIZE; i++) {
+        html += grid[i] ? '<span style = "color: ' + ChromTris.Colors.console[grid[i]] + ';">' + grid[i] + ' </span>' : grid[i];
+        
+        if ((i + 1) % ChromTris.WIDTH === 0) 
+            html += '<br />';
+    }   
+    
+    document.getElementById('ChromTrisConsole').innerHTML = html;
+};
+
+ChromTris.stop = function() {
+    ChromTris.worker.terminate();
+};
+
+window.onload = function() {    
     ChromTris.start();
+};
+
+window.onbeforeunload = function() {
+    ChromTris.stop();
 };
 
 ChromTris.toHtml = function(object) {
