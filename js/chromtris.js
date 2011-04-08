@@ -44,7 +44,7 @@ ChromTris.initWorker = function(worker) {
             ChromTris.Overlay.showObject(nextObject);
         }
         
-        switch(response[ChromTris.Response.MessageType]) {
+        switch(messageType) {
             case ChromTris.MessageType.None:
                 break;
             case ChromTris.MessageType.Debug: 
@@ -52,7 +52,7 @@ ChromTris.initWorker = function(worker) {
             case ChromTris.MessageType.Error:    
                 break;
             case ChromTris.MessageType.GameOver:   
-                alert("Game Over!");
+                ChromTris.Overlay.showGameOver(true);
                 break;
                             
         }

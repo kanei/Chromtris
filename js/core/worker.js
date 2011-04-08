@@ -112,7 +112,7 @@ ChromTris.Worker = {
                     message = "Game Over";
                     worker._respond(messageType, message);
                     
-                    close();
+                    return;
                 }
                 
                 worker._nextObject = ChromTris.Worker._getRandomObjectType();
