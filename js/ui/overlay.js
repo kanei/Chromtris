@@ -105,6 +105,7 @@ ChromTris.Overlay = {
      */
     showGameOver: function(bool) {
         this._isGameOver = bool;
+        this._redraw();
     },
     
     /**

@@ -51,7 +51,7 @@ ChromTris.initWorker = function(worker) {
                 break;
             case ChromTris.MessageType.Error:    
                 break;
-            case ChromTris.MessageType.GameOver:   
+            case ChromTris.MessageType.GameOver:
                 ChromTris.Overlay.showGameOver(true);
                 break;
                             

@@ -109,9 +109,8 @@ ChromTris.Worker = {
                 // if cannot insert new object, Game Over
                 if (!ChromTris.Grid.addObject(ChromTris.Worker._nextObject)) {
                     messageType = ChromTris.MessageType.GameOver;
-                    message = "Game Over";
-                    worker._respond(messageType, message);
-                    
+                    worker._respond(messageType);
+
                     return;
                 }
                 
