@@ -103,7 +103,7 @@ ChromTris.Worker = {
                 var deletedLines = ChromTris.Grid.deleteFullLines();
                 
                 if (deletedLines.length > 0) {
-                    worker._score += (deletedLines.Length + 3) * deletedLines.Length;
+                    worker._score += (deletedLines.length + 3) * deletedLines.length; //(deletedLines.Length + 3) *
                     messageType = ChromTris.MessageType.Debug;
                     message = "Following lines were deleted: " + deletedLines.join(" ");
                 }
