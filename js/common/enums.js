@@ -11,6 +11,22 @@ ChromTris.ObjectType = {
     Ti:         7
 };
 
+ChromTris.MessageType = {
+    None:       0,
+    Debug:      1,
+    Error:      2,
+    GameOver:   3
+};
+
+ChromTris.Response = {
+    CurrentObjectType:  0,
+    NextObjectType:     1,
+    Score:              2,
+    MessageType:        3,
+    MessageData:        4,
+    GridData:           5
+};
+
 ChromTris.Direction = {
     None: 0,
     Up: 1, 

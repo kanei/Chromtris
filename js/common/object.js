@@ -38,6 +38,15 @@ ChromTris.FallingObject.prototype.activeMatrix = function() {
     return this._matrixes[this._currentState];
 };
 
+/**
+ * Default matrix (at position 0)
+ * 
+ * @return default matrix of the object 
+ */
+ ChromTris.FallingObject.prototype.defaultMatrix = function() {
+    return this._matrixes[0];   
+ };
+
 /** 
  * Turn the object clockwise - move in its matrixes by one to the right.
  */

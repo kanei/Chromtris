@@ -1,10 +1,16 @@
 var ChromTris = ChromTris || {};
 
+ChromTris.checkSupport = function() {
+    if (!supports_canvas()) 
+        return false; 
+    var dummy_canvas = document.createElement('canvas');
+    var context = dummy_canvas.getContext('2d');
+    return typeof context.fillText == 'function';
+};
+
 ChromTris.start = function() {
     ChromTris.Overlay.init('ChromTrisOverlay');    
     ChromTris.Canvas.init('ChromTrisCanvas');
-    
-    ChromTris.Overlay.showObject(ChromTris.ObjectType.Square);
     
     ChromTris.initWorker('js/core/worker.js');
 };
@@ -13,15 +19,46 @@ ChromTris.stop = function() {
     ChromTris.worker.terminate();
 };
 
+ChromTris.drawScore = function(score) {
+    document.getElementById('score').innerHTML = score;   
+};
+
 ChromTris.initWorker = function(worker) {
     ChromTris.worker = new Worker(worker);
     
     ChromTris.worker.onmessage = function(event) {
-        var grid = event.data.split(',');      
+        var response = event.data.split('|');
+        
+        var currentObject = parseInt(response[ChromTris.Response.CurrentObjectType], 10);
+        var nextObject = parseInt(response[ChromTris.Response.NextObjectType], 10);
+        var score = parseInt(response[ChromTris.Response.Score], 10);
+        var messageType = parseInt(response[ChromTris.Response.MessageType], 10);
+        var message = response[ChromTris.Response.MessageData];
+        var grid = response[ChromTris.Response.GridData].split(',');
+        
         ChromTris.Canvas.displayGrid(grid);  
         
-        if (ChromTris.DEBUG) 
-            ChromTris.debugData(grid);
+        ChromTris.drawScore(score);
+        
+        ChromTris.Debug.grid(grid);
+        
+        if (nextObject) {
+            ChromTris.Overlay.showObject(nextObject);
+        }
+        
+        switch(response[ChromTris.Response.MessageType]) {
+            case ChromTris.MessageType.None:
+                break;
+            case ChromTris.MessageType.Debug:
+                ChromTris.Debug.message(message);   
+                break;
+            case ChromTris.MessageType.Error:    
+                break;
+            case ChromTris.MessageType.GameOver:   
+                alert("Game Over!");
+                break;
+                            
+        }
     };
     
     ChromTris.worker.onerror = function(error) {
@@ -30,21 +67,13 @@ ChromTris.initWorker = function(worker) {
     };
 };
 
-ChromTris.debugData = function (grid) {
-    var html = '';
-    
-    for(i = 0; i < ChromTris.DATASIZE; i++) {
-        html += grid[i] ? '<span style = "color: ' + ChromTris.Colors.console[grid[i]] + ';">' + grid[i] + ' </span>' : grid[i];
-        
-        if ((i + 1) % ChromTris.WIDTH === 0) 
-            html += '<br />';
-    }   
-    
-    document.getElementById('ChromTrisConsole').innerHTML = html;
-};
-
-window.onload = function() {    
-    ChromTris.start();
+window.onload = function() {  
+    if (ChromTris.checkSupport) {
+        ChromTris.start();
+    }
+    else {
+        alert ('Your browser is not supported, sorry');
+    }
 };
 
 window.onbeforeunload = function() {

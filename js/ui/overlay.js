@@ -2,68 +2,123 @@ var ChromTris = ChromTris || {};
 
 ChromTris.Overlay = {
     _canvas: false,
-    
     _ctx: false,
     
+    _currentObjectShown: 0,
+    _currentScoreShown: 0,
+    
     _drawPiece: function() {
-        _ctx.fillStyle = "rgba(30, 30, 160, 0.5)";
+        this._ctx.fillStyle = "rgba(192, 192, 192, 0.5)";
         
-        _ctx.beginPath();
-        _ctx.moveTo(0, 10);
-        _ctx.lineTo(30, 0);
-        _ctx.lineTo(40, 30);
-        _ctx.lineTo(10, 40);
-        _ctx.fill();
+        // original square
+        this._ctx.beginPath();
+        this._ctx.moveTo(0, 5);
+        this._ctx.lineTo(15, 0);
+        this._ctx.lineTo(20, 15);
+        this._ctx.lineTo(5, 20);
+        this._ctx.fill();
         
-        _ctx.fillStyle = "rgba(20, 20, 130, 0.5)";
-        _ctx.beginPath();
-        _ctx.moveTo(30, 0);
-        _ctx.lineTo(40, 5);
-        _ctx.lineTo(50, 35);
-        _ctx.lineTo(40, 30);
-        _ctx.fill();
+        //right side
+        this._ctx.fillStyle = "rgba(160, 160, 160, 0.5)";
+        this._ctx.beginPath();
+        this._ctx.moveTo(15, 0);
+        this._ctx.lineTo(20, 3);
+        this._ctx.lineTo(25, 18);
+        this._ctx.lineTo(20, 15);
+        this._ctx.fill();
         
-        _ctx.fillStyle = "rgba(10, 10, 100, 0.5)";
-        _ctx.beginPath();
-        _ctx.moveTo(40, 30);
-        _ctx.lineTo(50, 35);
-        _ctx.lineTo(20, 45);
-        _ctx.lineTo(10, 40);        
-        _ctx.fill();
+        //bottom side
+        this._ctx.fillStyle = "rgba(128, 128, 128, 0.5)";
+        this._ctx.beginPath();
+        this._ctx.moveTo(20, 15);
+        this._ctx.lineTo(25, 18);
+        this._ctx.lineTo(10, 23);
+        this._ctx.lineTo(5, 20);        
+        this._ctx.fill();
     },
     
-    _drawSquare: function() {
-        _ctx.save();
-        _ctx.translate(280, 30);
-        this._drawPiece();
+    _drawObject: function(objectType) {
+        var dimension = ChromTris.Objects[objectType].dimension;
+        var matrix = ChromTris.Objects[objectType].defaultMatrix();
+        var hadWritten = false;
         
-        _ctx.translate(34, -11);
-        this._drawPiece();
-        
-        _ctx.translate(11, 34);
-        this._drawPiece();
-        
-        _ctx.translate(-34, 11);
-        this._drawPiece();
-        
-        _ctx.restore();
+        for (y = 0; y < dimension; y ++) {
+            this._ctx.save();
+            for (x = 0; x < dimension; x ++) {
+                if (matrix[y][x]) {
+                    hadWritten = true;
+                    this._drawPiece();
+                }
+                this._ctx.translate(17, -6);
+            }
+            this._ctx.restore();
+            if (hadWritten)
+                this._ctx.translate(6, 17);
+        }
     },
     
+    _drawScore: function(score) {
+        this._ctx.font = 'bold 12px Nova Round';   
+        this._ctx.fillText(score, 0, 0);
+    },
+    
+    /**
+     * Redraws the whole canvas with values stored in the object
+     */
+    _redraw: function() {
+        this._canvas.width = this._canvas.width;
+        
+        this._ctx.save();
+        this._ctx.translate(0, 10);
+        this._drawObject(this._currentObjectShown);
+        this._ctx.restore();
+        
+        //this._ctx.save();
+        //this._ctx.translate(10, 505);
+        //this._drawScore(this._currentScoreShown);
+        //this._ctx.restore();        
+    },
+    
+    /**
+     * Shows object on the overlay canvas - uses different showing than canvas
+     *
+     * @param objectType enum from ChromTris.ObjectType
+     */
     showObject: function (objectType) {
-        switch (objectType) {
-            case ChromTris.ObjectType.Square:
-                this._drawSquare();
-                break;
-            case ChromTris.ObjectType.RightEl:
-                break;
-        }
+        if (objectType == this._currentObjectShown)
+            return;
+        
+        this._currentObjectShown = objectType;
+        
+        this._redraw();
     },
     
+    /**
+     * Displays the current score
+     * 
+     * @score integer value to be displayed
+     */
+    showScore: function (score) {
+        if (score == this._currentScoreShown)
+            return;
+            
+        this._currentScoreShown = score;
+        
+        this._redraw();
+    },    
+    
+    /**
+     * Initializes the overlay
+     * 
+     * @param canvasID DOM id of the canvas the overlay will be shown in
+     */
     init : function(canvasId) {
-        _canvas = document.getElementById(canvasId);
-        if(_canvas && _canvas.getContext) {
-            _ctx = _canvas.getContext('2d');
+        this._canvas = document.getElementById(canvasId);
+        if(this._canvas && this._canvas.getContext) {
+            this._ctx = this._canvas.getContext('2d');
         }
+        
+        
     }
 };
 

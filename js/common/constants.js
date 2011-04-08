@@ -17,6 +17,13 @@ ChromTris.CUBETOTAL = 33;   //size + space
 
 ChromTris.DEBUG = true;     //debuging mode
 
+//against cheating 135 * 9 = 1215
+ChromTris.TIMEBETWEENSTEPS = ChromTris.DATASIZE * ChromTris.WIDTH;
+//against cheating 135 * 9 * 15 = 18225
+ChromTris.TIMEBETWEENLEVELS = ChromTris.DATASIZE * ChromTris.WIDTH * ChromTris.HEIGHT;
+//against cheating 15 * 8 / 135 = 0.8889
+ChromTris.LEVELCHANGECOEFICIENT = ChromTris.HEIGHT * ChromTris.CENTERY / ChromTris.DATASIZE;
+
 ChromTris.Colors = {
     console: ["#000", "#3366FF", "#FF00FF", "#FF5050", "#CCFF66", "#FFFF00", "#33CC33", "#CCCC33"],
     

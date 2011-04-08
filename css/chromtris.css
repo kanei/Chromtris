@@ -1,6 +1,11 @@
+body {
+    font-family: 'Nova Round', serif;
+    font-style: normal;
+}
+
 #ChromTrisBackground {
     position: absolute;
-    background: #ddd;
+    background: rgba(192, 192, 192, 0.5);
     width: 284px;
     height: 480px;
     top: 40px;
@@ -28,4 +33,35 @@
     
     margin: 20px;
     padding: 10px;
+}
+
+#ChromTrisErrorConsole {
+    position: absolute;
+    left: 620px;
+    top: 30px;
+}
+
+#header {
+    position: absolute;
+    top: 400px;
+    left: 200px;
+    -webkit-transform: rotate(-90deg);
+    
+    color: rgba(64, 64, 64, 0.3);
+    font-size: 36px;
+    font-weight: 700;
+    text-shadow: 2px 2px 2px rgba(64, 64, 64, 0.2);
+    line-height: 1.2;
+}
+
+#score {
+    position: absolute;
+    top: 50px;
+    left: 200px;
+    width: 100px;
+    
+    color: rgba(64, 64, 64, 0.3);
+    text-shadow: 2px 2px 2px rgba(64, 64, 64, 0.2);
+    font-size: 26px;
+    text-align: right;
 }

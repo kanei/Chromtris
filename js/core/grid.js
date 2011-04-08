@@ -103,6 +103,15 @@ ChromTris.Grid = {
     },
     
     /** 
+     * Returns the type of current object
+     *
+     * @return enum from ChromTris.ObjectType
+     */
+    currentObject: function () {
+        return this._activeObject.type;  
+    },
+    
+    /** 
      * Removes active object
      */
     deleteObject: function() {
