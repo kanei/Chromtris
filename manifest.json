@@ -1,0 +1,12 @@
+{
+  "name": "ChromTris",
+  "version": "0.1.0",
+  "browser_action": {
+    "default_icon": "images/icon_48.png",
+    "default_title": "ChromTris",
+    "default_popup": "popup.html"
+  },
+  "icons": {
+    "48": "images/icon_48.png"
+  }
+} 
