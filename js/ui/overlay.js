@@ -5,7 +5,7 @@ ChromTris.Overlay = {
     _ctx: false,
     
     _currentObjectShown: 0,
-    _currentScoreShown: 0,
+    _isGameOver: false,
     
     _drawPiece: function() {
         this._ctx.fillStyle = "rgba(192, 192, 192, 0.5)";
@@ -56,10 +56,16 @@ ChromTris.Overlay = {
                 this._ctx.translate(6, 17);
         }
     },
-    
-    _drawScore: function(score) {
-        this._ctx.font = 'bold 12px Nova Round';   
-        this._ctx.fillText(score, 0, 0);
+
+    _drawGameOver: function() {
+      this._ctx.shadowOffsetX = 3;
+      this._ctx.shadowOffsetY = 3;
+      this._ctx.shadowBlur = 5;
+      this._ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
+
+      this._ctx.fillStyle = 'rgba(128, 128, 128, 0.7)';
+      this._ctx.font = 'bold 52px Nova Round';
+      this._ctx.fillText('Game Over', 0, 0);
     },
     
     /**
@@ -72,11 +78,12 @@ ChromTris.Overlay = {
         this._ctx.translate(0, 10);
         this._drawObject(this._currentObjectShown);
         this._ctx.restore();
-        
-        //this._ctx.save();
-        //this._ctx.translate(10, 505);
-        //this._drawScore(this._currentScoreShown);
-        //this._ctx.restore();        
+
+        if(this._isGameOver) {
+            this._ctx.translate(20, 220);
+            this._drawGameOver();
+            this._ctx.restore();
+        }
     },
     
     /**
@@ -92,20 +99,13 @@ ChromTris.Overlay = {
         
         this._redraw();
     },
-    
+
     /**
-     * Displays the current score
-     * 
-     * @score integer value to be displayed
+     * Shows game over text
      */
-    showScore: function (score) {
-        if (score == this._currentScoreShown)
-            return;
-            
-        this._currentScoreShown = score;
-        
-        this._redraw();
-    },    
+    showGameOver: function(bool) {
+        this._isGameOver = bool;
+    },
     
     /**
      * Initializes the overlay

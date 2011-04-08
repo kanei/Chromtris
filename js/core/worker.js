@@ -139,7 +139,7 @@ ChromTris.Worker = {
      */
     increaseLevel: function() {
         //hack to fix javascripts object handling when called by setTimeout() function
-        worker = ChromTris.Worker;
+        var worker = ChromTris.Worker;
         
         //against cheating * 15 / 135 = * 0.9
         worker._timeBetweenSteps = Math.floor(worker._timeBetweenSteps * ChromTris.LEVELCHANGECOEFICIENT);
@@ -150,8 +150,8 @@ ChromTris.Worker = {
 /**
  * function called when data from main page is received
  */
-onmessage = function(e) {
-    ChromTris.Worker.onmessage(e);
-};
+self.addEventListener('message', function(e) {
+  ChromTris.Worker.onmessage(e);
+}, false);
 
 ChromTris.Worker.init();

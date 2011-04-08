@@ -12,7 +12,7 @@ ChromTris.start = function() {
     ChromTris.Overlay.init('ChromTrisOverlay');    
     ChromTris.Canvas.init('ChromTrisCanvas');
     
-    ChromTris.initWorker('js/core/worker.js');
+    ChromTris.initWorker('js/worker-min.js');
 };
 
 ChromTris.stop = function() {

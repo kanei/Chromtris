@@ -26,9 +26,7 @@ ChromTris.LEVELCHANGECOEFICIENT = ChromTris.HEIGHT * ChromTris.CENTERY / ChromTr
 
 ChromTris.Colors = {
     console: ["#000", "#3366FF", "#FF00FF", "#FF5050", "#CCFF66", "#FFFF00", "#33CC33", "#CCCC33"],
-    
-    cubeFrontx: ["#000", "rgba(51, 204, 51, 0.7)", "rgba(51, 189, 82, 0.7)", "rgba(51, 173, 112, 0.7)", "rgba(51, 158, 143, 0.7)", "rgba(51, 143, 173, 0.7)", "rgba(51, 128, 204, 0.7)", "rgba(51, 112, 235, 0.7)"],
-    
+   
     cubeFront: ["#000", "rgba(51, 204, 51, 0.7)", "rgba(43, 196, 82, 0.7)", "rgba(36, 189, 112, 0.7)", "rgba(28, 181, 143, 0.7)", "rgba(20, 173, 173, 0.7)", "rgba(13, 166, 204, 0.7)", "rgba(5, 158, 235, 0.7)"]
     
     //#33CC33 = 51 204 51
