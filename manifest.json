@@ -1,5 +1,5 @@
 {
-  "name": "ChromTris",
+  "name": "ChromTris Tetris",
   "version": "0.1.0",
   "browser_action": {
     "default_icon": "images/logo-48.png",
