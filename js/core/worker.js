@@ -1,7 +1,5 @@
 var ChromTris = ChromTris || {};
 
-importScripts('../common/enums.js', '../common/constants.js', '../common/object.js', 'grid.js');
-
 ChromTris.Worker = {
     _timeBetweenSteps: ChromTris.TIMEBETWEENSTEPS,
     

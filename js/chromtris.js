@@ -40,8 +40,6 @@ ChromTris.initWorker = function(worker) {
         
         ChromTris.drawScore(score);
         
-        ChromTris.Debug.grid(grid);
-        
         if (nextObject) {
             ChromTris.Overlay.showObject(nextObject);
         }
@@ -49,8 +47,7 @@ ChromTris.initWorker = function(worker) {
         switch(response[ChromTris.Response.MessageType]) {
             case ChromTris.MessageType.None:
                 break;
-            case ChromTris.MessageType.Debug:
-                ChromTris.Debug.message(message);   
+            case ChromTris.MessageType.Debug: 
                 break;
             case ChromTris.MessageType.Error:    
                 break;
