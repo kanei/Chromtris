@@ -26,4 +26,17 @@
         (function() {
             var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
             ga.src = 'https://ssl.google-analytics.com/ga.js';
-            var s = document.getElementsB
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+  
+    <div id="header">ChromTris</div>
+    <div id="ChromTrisBackground"></div>
+    <canvas id="ChromTrisCanvas" width="400" height="500"></canvas>
+    <canvas id="ChromTrisOverlay" width="400" height="550"></canvas>
+    <pre id="ChromTrisConsole"></pre>
+    <pre id="ChromTrisErrorConsole"></pre>    
+    <div id="score"></div>
+    <div id="footer"></div>
+  </body>
+</html>
