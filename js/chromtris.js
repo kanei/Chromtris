@@ -1,5 +1,8 @@
 var ChromTris = ChromTris || {};
 
+ChromTris.isRunning = false;
+ChromTris.isWorkerPending = false;
+
 ChromTris.checkSupport = function() {
     if (!supports_canvas()) 
         return false; 
@@ -8,15 +11,36 @@ ChromTris.checkSupport = function() {
     return typeof context.fillText == 'function';
 };
 
-ChromTris.start = function() {
+ChromTris.init = function() {
     ChromTris.Overlay.init('ChromTrisOverlay');    
     ChromTris.Canvas.init('ChromTrisCanvas');
+    ChromTris.Overlay.showStart(ChromTris.start);
+};
+
+ChromTris.start = function() {
+    ChromTris.Debug.message('ChromTris.start()');
+    if (ChromTris.isRunning) {
+        return;
+    }
     
-    ChromTris.initWorker('js/worker-min.js');
+    ChromTris.isRunning = true;
+    ChromTris.Overlay.hideStart();
+    ChromTris.Overlay.showGameOver(false);
+    ChromTris.Debug.message('ChromTris.start(): initializing worker'); 
+    ChromTris.initWorker('js/core/worker.js');
+    
+    _gaq.push(['_trackEvent','Game progress', 'Game started']);
 };
 
 ChromTris.stop = function() {
+    if (!ChromTris.isRunning) {
+        return;
+    }
+    
     ChromTris.worker.terminate();
+    ChromTris.Debug.message('Stopped');
+    ChromTris.isRunning = false;
+    ChromTris.Overlay.showStart(ChromTris.start);
 };
 
 ChromTris.drawScore = function(score) {
@@ -24,9 +48,17 @@ ChromTris.drawScore = function(score) {
 };
 
 ChromTris.initWorker = function(worker) {
+    ChromTris.isWorkerPending = true;
+    document.getElementById('ChromTrisLoader').style.display = 'block';
+    
     ChromTris.worker = new Worker(worker);
     
     ChromTris.worker.onmessage = function(event) {
+        if (ChromTris.isWorkerPending) {
+            document.getElementById('ChromTrisLoader').style.display = 'none';
+            ChromTris.isWorkerPending = false;
+        }
+        
         var response = event.data.split('|');
         
         var currentObject = parseInt(response[ChromTris.Response.CurrentObjectType], 10);
@@ -56,6 +88,9 @@ ChromTris.initWorker = function(worker) {
                 break;
             case ChromTris.MessageType.GameOver:
                 ChromTris.Overlay.showGameOver(true);
+                ChromTris.HighScore.set(score);
+                _gaq.push(['_trackEvent','Game progress', 'Score', score]);
+                ChromTris.stop();
                 break;
                             
         }
@@ -69,7 +104,7 @@ ChromTris.initWorker = function(worker) {
 
 window.onload = function() {  
     if (ChromTris.checkSupport) {
-        ChromTris.start();
+        ChromTris.init();
     }
     else {
         alert ('Your browser is not supported, sorry');

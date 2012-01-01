@@ -1,3 +1,4 @@
 # Add options to the project                                                [ ]
 # Add replay button when game ends and track it by GA                       [ ]
 # Add high scores                                                           [ ]
+# Add pause                                                                 [ ]

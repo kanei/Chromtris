@@ -6,6 +6,44 @@ ChromTris.Overlay = {
     
     _currentObjectShown: 0,
     _isGameOver: false,
+    _isGameRunning: false,
+    
+    _onStart: null,
+    
+    _startButton: new ChromTris.Area(30, 400, 220, 80),
+    
+    FontType: {
+        Normal: 1,
+        Large: 2
+    },
+    
+    TextAlign: {
+        Left: 1,
+        Center: 2,
+        Right: 3
+    },
+    
+    _setFont: function(fontType, textAlign) {
+        this._ctx.shadowOffsetX = 3;
+        this._ctx.shadowOffsetY = 3;
+        this._ctx.shadowBlur = 5;
+        this._ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
+        
+        this._ctx.fillStyle = 'rgba(128, 128, 128, 0.7)';
+        if (fontType == this.FontType.Large) {
+            this._ctx.font = 'bold 52px Nova Round'; 
+        } else {
+            this._ctx.font = 'bold 26px Nova Round'; 
+        }
+                
+        if (textAlign == this.TextAlign.Center) {
+            this._ctx.textAlign = 'center';  
+        } else if (textAlign == this.TextAlign.Right) {
+            this._ctx.textAlign = 'right';  
+        } else {
+            this._ctx.textAlign = 'left';
+        }
+    },
     
     _drawPiece: function() {
         this._ctx.fillStyle = "rgba(192, 192, 192, 0.5)";
@@ -42,9 +80,9 @@ ChromTris.Overlay = {
         var matrix = ChromTris.Objects[objectType].defaultMatrix();
         var hadWritten = false;
         
-        for (y = 0; y < dimension; y ++) {
+        for (var y = 0; y < dimension; y ++) {
             this._ctx.save();
-            for (x = 0; x < dimension; x ++) {
+            for (var x = 0; x < dimension; x ++) {
                 if (matrix[y][x]) {
                     hadWritten = true;
                     this._drawPiece();
@@ -56,16 +94,24 @@ ChromTris.Overlay = {
                 this._ctx.translate(6, 17);
         }
     },
-
-    _drawGameOver: function() {
-      this._ctx.shadowOffsetX = 3;
-      this._ctx.shadowOffsetY = 3;
-      this._ctx.shadowBlur = 5;
-      this._ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
-
-      this._ctx.fillStyle = 'rgba(128, 128, 128, 0.7)';
-      this._ctx.font = 'bold 52px Nova Round';
-      this._ctx.fillText('Game Over', 0, 0);
+    
+    _drawHighScore: function() {
+        this._ctx.save();
+        this._ctx.translate(20, 200);
+        
+        this._setFont(this.FontType.Large);                
+        this._ctx.fillText('HighScore', 0, 0);
+        
+        this._setFont(this.FontType.Normal);
+        var highScore = ChromTris.HighScore.get();
+        for (var i in highScore) {
+            var y =  30 * i + 50;
+            this._ctx.textAlign = 'right';
+            this._ctx.fillText(parseInt(i, 10)+1 + ' ..........', 140, y);
+            this._ctx.fillText(highScore[i], 220, y);
+        }
+        
+        this._ctx.restore();
     },
     
     /**
@@ -74,16 +120,30 @@ ChromTris.Overlay = {
     _redraw: function() {
         this._canvas.width = this._canvas.width;
         
-        this._ctx.save();
-        this._ctx.translate(0, 10);
-        this._drawObject(this._currentObjectShown);
-        this._ctx.restore();
-
-        if(this._isGameOver) {
-            this._ctx.translate(20, 220);
-            this._drawGameOver();
+        if (this._currentObjectShown > 0) {
+            this._ctx.save();
+            this._ctx.translate(0, 10);
+            this._drawObject(this._currentObjectShown);
             this._ctx.restore();
         }
+        
+        if(!this._isGameRunning) {
+            this._ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
+            this._ctx.fillRect(15, 15, 275, 470);
+            
+            this._setFont(this.FontType.Large);
+            
+            this._ctx.fillText('Start =>', 20, 460);
+            
+            if(this._isGameOver) {
+                this._ctx.fillText('GameOver', 20, 100);
+            } else {
+                this._ctx.fillText('ChromTris', 20, 100);
+            }
+            
+            this._drawHighScore();
+        }      
+        
     },
     
     /**
@@ -99,6 +159,24 @@ ChromTris.Overlay = {
         
         this._redraw();
     },
+    
+    /**
+     * 
+     * @param callback function to be called when start button is clicked
+     */
+    showStart: function(callback) {
+        this._isGameRunning = false;
+        this._onStart = callback;
+        this._redraw();
+    },
+    
+    /**
+     * Hides start button
+     */
+    hideStart: function() {
+        this._isGameRunning = true;
+        this._redraw();
+    },
 
     /**
      * Shows game over text
@@ -106,6 +184,29 @@ ChromTris.Overlay = {
     showGameOver: function(bool) {
         this._isGameOver = bool;
         this._redraw();
+    },
+    
+    /**
+     * Function, which is called when on click event is triggered on canvas
+     */
+    onClick: function(e) {
+        if (ChromTris.Overlay._startButton.isOver(e.offsetX, e.offsetY)) {
+            ChromTris.Overlay._onStart();
+        }        
+        
+        ChromTris.Debug.message('Clicked on Overlay x: ' + e.offsetX + ' y: ' + e.offsetY);
+    },
+    
+    /**
+     * Handles on mouse move event
+     */ 
+    onMouseMove: function(e) {
+        if (ChromTris.Overlay._isGameRunning) {
+            return;   
+        }
+        
+        ChromTris.Overlay._canvas.style.cursor = ChromTris.Overlay._startButton.isOver(e.offsetX, e.offsetY) ? 
+            'pointer' : 'auto'; 
     },
     
     /**
@@ -119,7 +220,8 @@ ChromTris.Overlay = {
             this._ctx = this._canvas.getContext('2d');
         }
         
-        
+        this._canvas.addEventListener('click', ChromTris.Overlay.onClick, false);
+        this._canvas.addEventListener('mousemove', ChromTris.Overlay.onMouseMove, false);
     }
 };
 
