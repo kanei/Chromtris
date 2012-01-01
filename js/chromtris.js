@@ -14,7 +14,6 @@ ChromTris.checkSupport = function() {
 ChromTris.init = function() {
     ChromTris.Overlay.init('ChromTrisOverlay');    
     ChromTris.Canvas.init('ChromTrisCanvas');
-    ChromTris.Overlay.showStart(ChromTris.start);
 };
 
 ChromTris.start = function() {
