@@ -70,13 +70,13 @@ ChromTris.Canvas = {
     
     displayGrid: function(grid) {
         this._canvas.width = this._canvas.width;
-        _grid = grid;
+        this._grid = grid;
         
         this._ctx.translate(ChromTris.CUBESPACE, ChromTris.CUBESPACE); 
         
-        for (y = 0; y < ChromTris.HEIGHT; y++) {
+        for (var y = 0; y < ChromTris.HEIGHT; y++) {
             this._ctx.save();
-            for (x = 0; x < ChromTris.WIDTH; x++) {
+            for (var x = 0; x < ChromTris.WIDTH; x++) {
                 this._drawCube(x, y, parseInt(grid[y * ChromTris.WIDTH + x], 10));
                 this._ctx.translate(ChromTris.CUBETOTAL, 0);
             }

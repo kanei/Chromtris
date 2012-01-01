@@ -20,7 +20,9 @@ ChromTris.Debug = {
     message: function(message) {
         if (!ChromTris.DEBUG)
             return;
-            
-        document.getElementById('ChromTrisErrorConsole').innerHTML += message + '<br />';
+        var time = new Date();
+        
+        document.getElementById('ChromTrisErrorConsole').innerHTML += 
+            time.getMinutes() + ':' + time.getSeconds() + ' ' + time.getTime() % 1000 +': ' + message + '<br />';
     }
 };
