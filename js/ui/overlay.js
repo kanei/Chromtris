@@ -140,7 +140,6 @@ ChromTris.Overlay = {
             } else {
                 this._ctx.fillText('ChromTris', 20, 100);
             }
-            
             this._drawHighScore();
         }      
         
@@ -191,7 +190,8 @@ ChromTris.Overlay = {
      */
     onClick: function(e) {
         if (ChromTris.Overlay._startButton.isOver(e.offsetX, e.offsetY)) {
-            ChromTris.Overlay._onStart();
+			ChromTris.Overlay._canvas.style.cursor = 'auto'; 
+            ChromTris.Overlay._onStart();			
         }        
         
         ChromTris.Debug.message('Clicked on Overlay x: ' + e.offsetX + ' y: ' + e.offsetY);
@@ -222,6 +222,12 @@ ChromTris.Overlay = {
         
         this._canvas.addEventListener('click', ChromTris.Overlay.onClick, false);
         this._canvas.addEventListener('mousemove', ChromTris.Overlay.onMouseMove, false);
+		
+		this.showStart(ChromTris.start);
     }
 };
+
+if (document.addEventListener) {
+	document.addEventListener('DOMContentLoaded', function() {ChromTris.Overlay._redraw()}, false);
+}
 
