@@ -29,25 +29,10 @@ body {
 
 #ChromTrisConsole {
     display: none;
-    position: absolute;
-    left: 400px;
-    top: 30px;
-    
-    display: block;
-    float: left;
-    background: #eee;
-    
-    width: 200px;
-    height: 500px;
-    
-    margin: 20px;
-    padding: 10px;
 }
 
 #ChromTrisErrorConsole {
-    position: absolute;
-    left: 620px;
-    top: 30px;
+    display:none;
 }
 
 #header {

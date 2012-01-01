@@ -27,7 +27,7 @@ ChromTris.start = function() {
     ChromTris.Overlay.hideStart();
     ChromTris.Overlay.showGameOver(false);
     ChromTris.Debug.message('ChromTris.start(): initializing worker'); 
-    ChromTris.initWorker('js/core/worker.js');
+    ChromTris.initWorker('js/worker-min.js');
     
     _gaq.push(['_trackEvent','Game progress', 'Game started']);
 };

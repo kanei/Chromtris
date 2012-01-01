@@ -52,9 +52,7 @@ ChromTris.Worker = {
     },
     
     //initializes the worker process
-    init: function() {
-        this._respond(ChromTris.MessageType.Debug, 'worker.init()');
-        
+    init: function() {        
         this._nextObject = this._getRandomObjectType();
         
         ChromTris.Grid.init();
